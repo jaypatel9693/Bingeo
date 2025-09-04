@@ -1,0 +1,61 @@
+{
+  "info": {
+    "name": "Bingeo API",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Collection for testing Bingeo backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "List Recommendations",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/recommendations",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "recommendations"]
+        }
+      }
+    },
+    {
+      "name": "Create Recommendation",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" },
+          { "key": "Content-Type", "value": "application/json", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"movieTitle\": \"Inception\",\n  \"description\": \"A sci-fi thriller\",\n  \"status\": \"WATCHED\",\n  \"tmdbId\": 27205\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/recommendations",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "recommendations"]
+        }
+      }
+    }
+  ]
+}
