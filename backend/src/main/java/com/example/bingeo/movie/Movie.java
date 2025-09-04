@@ -1,13 +1,22 @@
-package com.example.bingeo.model;
+package com.example.bingeo.movie;
+
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Movie {
-  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
-  private String title;
-  @Column(length=2000) private String overview;
-  private Integer year;
-  private String posterUrl;
-  private Double rating;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String description;
+    private String genre;
+    private int releaseYear;
+    private double rating;
 }

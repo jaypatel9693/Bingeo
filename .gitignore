@@ -1,5 +1,6 @@
 # === Java / Spring Boot (Maven) ===
 target/
+backend/target/
 *.class
 *.jar
 *.war

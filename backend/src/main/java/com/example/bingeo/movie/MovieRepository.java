@@ -1,4 +1,6 @@
-package com.example.bingeo.repo;
+package com.example.bingeo.movie;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.bingeo.model.Movie;
-public interface MovieRepository extends JpaRepository<Movie, Long> {}
+
+public interface MovieRepository extends JpaRepository<Movie, Long> {
+}

@@ -1,60 +1,53 @@
 package com.example.bingeo.web;
 
-import com.example.bingeo.auth.JwtService;
-import com.example.bingeo.auth.PasswordService;
 import com.example.bingeo.model.User;
 import com.example.bingeo.user.UserRepository;
+import com.example.bingeo.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserRepository userRepo;
-    private final PasswordService passwordService;
-    private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepo, PasswordService passwordService, JwtService jwtService) {
-        this.userRepo = userRepo;
-        this.passwordService = passwordService;
-        this.jwtService = jwtService;
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
-        String password = body.get("password");
-
-        if (userRepo.existsByEmail(email)) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Email already in use"));
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already exists");
         }
-
-        User user = new User();
-        user.setEmail(email);
-        user.setPasswordHash(passwordService.hash(password));
-        userRepo.save(user);
-
-        // ✅ fixed: user.getId() instead of user.getUser().getId()
-        String token = jwtService.generate(user.getId());
-
-        return ResponseEntity.ok(Map.of("token", token));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered successfully!");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
-        String email = body.get("email");
-        String password = body.get("password");
+    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
+        String email = credentials.get("email");
+        String password = credentials.get("password");
 
-        return userRepo.findByEmail(email)
-                .filter(u -> passwordService.matches(password, u.getPasswordHash()))
-                .map(u -> {
-                    // ✅ same fix here
-                    String token = jwtService.generate(u.getId());
-                    return ResponseEntity.ok(Map.of("token", token));
+        return userRepository.findByEmail(email)
+                .map(user -> {
+                    if (passwordEncoder.matches(password, user.getPassword())) {
+                        String token = JwtUtil.generateToken(email);
+                        Map<String, String> response = new HashMap<>();
+                        response.put("token", token);
+                        return ResponseEntity.ok(response);
+                    } else {
+                        return ResponseEntity.badRequest().body("Invalid credentials");
+                    }
                 })
-                .orElse(ResponseEntity.status(401).body(Map.of("error", "Invalid credentials")));
+                .orElse(ResponseEntity.badRequest().body("User not found"));
     }
 }

@@ -1,15 +1,23 @@
-package com.example.bingeo.controller;
-import com.example.bingeo.model.Movie;
-import com.example.bingeo.repo.MovieRepository;
+package com.example.bingeo.movie;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@RestController @RequestMapping("/api/movies")
+@RestController
+@RequestMapping("/api/movies")
+@RequiredArgsConstructor
 public class MovieController {
-  private final MovieRepository repo;
-  public MovieController(MovieRepository repo){ this.repo = repo; }
+    private final MovieService movieService;
 
-  @GetMapping public List<Movie> all(){ return repo.findAll(); }
+    @GetMapping
+    public List<Movie> getMovies() {
+        return movieService.getAllMovies();
+    }
 
-  @PostMapping public Movie create(@RequestBody Movie m){ return repo.save(m); } // (protect later)
+    @PostMapping
+    public Movie createMovie(@RequestBody Movie movie) {
+        return movieService.addMovie(movie);
+    }
 }
