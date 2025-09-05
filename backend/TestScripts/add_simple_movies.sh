@@ -15,7 +15,7 @@ add_simple_movie() {
     
     curl -X POST "$BASE_URL" \
         -H "Content-Type: application/json" \
-        -d "{\"title\": \"$title\", \"year\": $year}"
+        -d "{\"title\": \"$title\", \"releaseYear\": $year}"
     
     echo ""
 }

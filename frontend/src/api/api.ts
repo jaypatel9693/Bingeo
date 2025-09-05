@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Movie } from "../types";
 
+//tODO MOVE THIS URL TO ENV VARIABLE
 const API_BASE = "http://localhost:8080/api/movies"; // adjust if your backend URL differs
 
 export async function getPopularMovies(): Promise<Movie[]> {
