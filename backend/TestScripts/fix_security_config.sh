@@ -1,3 +1,10 @@
+#!/bin/bash
+
+# Backup the current file
+cp src/main/java/com/example/bingeo/security/SecurityConfig.java src/main/java/com/example/bingeo/security/SecurityConfig.java.backup
+
+# Create the corrected SecurityConfig.java
+cat > src/main/java/com/example/bingeo/security/SecurityConfig.java << 'CONTENT'
 package com.example.bingeo.security;
 
 import org.springframework.context.annotation.Bean;
@@ -24,7 +31,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(userDetailsService);
+        JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(userDetailsService, jwtUtil);
 
         http
             .csrf(csrf -> csrf.disable())
@@ -49,3 +56,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+CONTENT
+
+echo "✅ SecurityConfig.java has been fixed!"

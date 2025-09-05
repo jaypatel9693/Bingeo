@@ -9,6 +9,7 @@ import java.util.List;
 public class MovieService {
     private final MovieRepository movieRepository;
 
+//Todo : implement pagination
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }

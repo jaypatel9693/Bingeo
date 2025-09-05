@@ -1,8 +1,7 @@
-package com.example.bingeo.web;
+package com.example.bingeo.rec;
 
 import com.example.bingeo.model.Recommendation;
 import com.example.bingeo.model.User;
-import com.example.bingeo.rec.RecommendationService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
