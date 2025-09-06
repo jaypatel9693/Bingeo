@@ -2,6 +2,14 @@ import React, { useEffect, useState, useMemo } from "react";
 import { getPopularMovies, searchMovies } from "../api/api";
 import { Movie } from "../types";
 import MovieCard from "../components/MovieCard";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 export default function Movies() {
   const [sortBy, setSortBy] = useState<"imdb_desc" | "imdb_asc">("imdb_desc");
@@ -63,6 +71,17 @@ export default function Movies() {
         <option value="imdb_desc">IMDb Rating (High → Low)</option>
         <option value="imdb_asc">IMDb Rating (Low → High)</option>
       </select>
+      <DropdownMenu>
+  <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>Profile</DropdownMenuItem>
+    <DropdownMenuItem>Billing</DropdownMenuItem>
+    <DropdownMenuItem>Team</DropdownMenuItem>
+    <DropdownMenuItem>Subscription</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
 
       {/* Loading */}
       {loading && <p>Loading movies...</p>}

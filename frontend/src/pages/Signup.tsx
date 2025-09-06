@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { register } from "../api/auth";
 import { saveToken } from "../utils/auth";
 
 export default function Signup() {
@@ -13,18 +12,6 @@ export default function Signup() {
     setError(null);
     setLoading(true);
 
-    try {
-      const res = await register(email, password); // expects { token: string }
-      saveToken(res.token);
-      alert("Signup successful!");
-      window.location.href = "/";
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : "Signup failed";
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
